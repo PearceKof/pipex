@@ -34,9 +34,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[j] = '\0';
 	return (str);
 }
-
-// #include <stdio.h>
-// int main()
-// {
-// 	printf("%s", ft_substr("BONJOUR LES HARICOTS !", 8, 15));
-// }

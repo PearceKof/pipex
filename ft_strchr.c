@@ -17,16 +17,10 @@ char	*ft_strchr(const char *str, int c)
 	int		i;
 
 	i = 0;
-	while (str[i] != (char)c && str[i] != '\0')
+	while (str[i] != (unsigned char)c && str[i] != '\0')
 		i++;
-	if (str[i] == (char)c)
+	if (str[i] == (unsigned char)c)
 		return ((char *)str + i);
 	else
 		return (NULL);
 }
-
-// int main(void)
-// {
-// 	char s[] = "tripouille";
-// 	printf("result :%s\n", ft_strchr(s, 'a'));
-// }

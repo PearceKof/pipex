@@ -20,8 +20,3 @@ int	ft_tolower(int c)
 	}
 	return (c);
 }
-
-// int main()
-// {
-// 	printf("%c, %c, %c", ft_tolower('a'),  ft_tolower('Z'), ft_tolower('A'));
-// }

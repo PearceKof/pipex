@@ -68,8 +68,3 @@ char	*ft_itoa(int n)
 		str[0] = '-';
 	return (str);
 }
-
-// int    main(void)
-// {
-// 	printf("%s\n", ft_itoa(0));
-// }

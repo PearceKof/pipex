@@ -23,11 +23,3 @@ void	ft_bzero(void *s, size_t n)
 		n--;
 	}
 }
-
-// int main()
-// {
-//     char str[11] = "0123456789";
-//     printf("Avant: %s\n\n", str);
-//     ft_bzero(str+3, 3);
-//     printf("Apres: %s\n\n", str);
-// }

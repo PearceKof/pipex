@@ -52,9 +52,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 	str[i] = '\0';
 	return (str);
 }
-
-// #include<stdio.h>
-// int main()
-// {
-// 	printf("%s\n", ft_strtrim("tripouille   xxx", " x"));
-// }

@@ -23,9 +23,3 @@ size_t	ft_strlen(const char *str)
 	}
 	return (i);
 }
-
-// int main()
-// {
-// 	printf("%lu\n", ft_strlen("test"));
-// 	printf("%lu", strlen("test"));
-// }

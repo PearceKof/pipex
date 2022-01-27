@@ -19,7 +19,7 @@ void	*ft_memchr(const void *str, int c, size_t n)
 	ptr = (unsigned char *)str;
 	while (n > 0)
 	{
-		if (*ptr == c)
+		if (*ptr == (unsigned char)c)
 		{
 			return (ptr);
 		}
@@ -28,10 +28,3 @@ void	*ft_memchr(const void *str, int c, size_t n)
 	}
 	return (NULL);
 }
-
-// int main()
-// {
-// 	char test[] = "têst";
-// 	printf("%s\n", ft_memchr(test, 234, 2));
-// 	printf("%s", memchr(test, 234, 2));
-// }

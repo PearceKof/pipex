@@ -28,21 +28,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (0);
 }
-
-// int main () {
-// 	char str1[20];
-// 	char str2[20];
-// 	int result;
-// 	strcpy(str1, "hello");
-// 	strcpy(str2, "helLO WORLD");
-// 	//This will compare the first 4 characters
-// 	result = ft_strncmp(str1, str2, 4);
-// 	if(result > 0) {
-//printf("str1 is greater than str2");
-// 	} else if(result < 0) {
-//printf("str1 is less than str2");
-// 	} else {
-// 		printf("Both the strings str1 and str2 are equal");
-// 	}
-// 	return 0;
-// }

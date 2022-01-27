@@ -25,15 +25,3 @@ int	ft_isalnum(int c)
 		return (0);
 	}
 }
-
-// int main(void)
-// {
-// 	if (ft_isalpha(')'))
-// 	{
-// 		printf("est alphanumerique");
-// 	}
-// 	else
-// 	{
-// 		printf("n'est pas alphanumerique");
-// 	}
-// }

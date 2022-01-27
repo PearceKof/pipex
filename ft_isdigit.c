@@ -23,16 +23,3 @@ int	ft_isdigit(int c)
 		return (0);
 	}
 }
-
-// #include <stdio.h>
-// int main(void)
-// {
-// 	if (isalpha('a'))
-// 	{
-// 		printf("est numerique");
-// 	}
-// 	else
-// 	{
-// 		printf("n'est pas numerique");
-// 	}
-// }

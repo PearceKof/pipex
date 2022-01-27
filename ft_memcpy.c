@@ -31,12 +31,3 @@ void	*ft_memcpy(void *dst, const void *src, size_t size)
 	}
 	return (dst);
 }
-
-// int main()
-// {
-// 	char str1[11] = "0123456789";
-// 	char str2[11] = "9876543210";
-// 	printf("%s\n", str2);
-// 	ft_memcpy(str2, str1, 11*sizeof(char));
-// 	printf("%s", str2);
-// }

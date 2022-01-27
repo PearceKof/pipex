@@ -40,9 +40,3 @@ int	ft_atoi(const char *str)
 	}
 	return (value * neg);
 }
-
-// int	main(void)
-// {
-// 	printf("%d\n", atoi("-1"));
-// 	printf("%d", ft_atoi("-1"));
-// }

@@ -91,24 +91,3 @@ char	**ft_split(char const *s, char c)
 	tab[k] = NULL;
 	return (tab);
 }
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// int main()
-// {
-//     char **str;
-//     int i = 0;
-//     int j = 0;
-//     str = ft_split("ceci*est*un*test", '*');
-//     while (j < 4)
-//     {
-//     while (str[j][i] != '\0')
-//     {
-//         printf("%c", str[j][i]);
-//         i++;
-//     }
-//         j++;
-//         i = 0;
-//     }
-//     printf("\nthe end");
-// }

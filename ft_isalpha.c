@@ -24,15 +24,3 @@ int	ft_isalpha(int c)
 		return (0);
 	}
 }
-
-// int main(void)
-// {
-// 	if (isalpha('2'))
-// 	{
-// 		printf("est alphae");
-// 	}
-// 	else
-// 	{
-// 		printf("n'est pas alpha");
-// 	}
-// }

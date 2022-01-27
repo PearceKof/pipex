@@ -35,11 +35,3 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	dst[d_len + i] = '\0';
 	return (s_len);
 }
-
-// #include <stdio.h>
-// int main()
-// {
-// 	char s1[30] = "0123456789";
-// 	char s2[11] = "abcdefghij";
-// 	printf("%ld, %s, %s\n", ft_strlcat(s1, s2, 25), s1, s2);
-// }
