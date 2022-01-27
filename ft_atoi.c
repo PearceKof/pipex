@@ -21,19 +21,17 @@ int	ft_atoi(const char *str)
 	neg = 1;
 	i = 0;
 	value = 0;
-	if (str[0] == '-')
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
+	if (str[i] == '-')
 	{
 		neg = -1;
 		i++;
 	}
-	else if (str[0] == '+')
-	{
+	else if (str[i] == '+')
 		i++;
-	}
 	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
 	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
 		value *= 10;
 		value += str[i] - '0';
 		i++;
