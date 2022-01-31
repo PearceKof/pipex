@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	ft_memcmp( const void *ptr1, const void *ptr2, size_t size )
+int	ft_memcmp(const void *ptr1, const void *ptr2, size_t size)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;

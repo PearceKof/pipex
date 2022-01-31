@@ -19,7 +19,7 @@ char	*ft_strnstr(const char *str, const char *chr, size_t n)
 
 	i = 0;
 	j = 0;
-	if (str[0] == '\0' && chr[0] == '\0')
+	if (chr[0] == '\0')
 		return ((char *)str);
 	while (str[i] != '\0' && n > 0)
 	{
@@ -38,15 +38,3 @@ char	*ft_strnstr(const char *str, const char *chr, size_t n)
 	}
 	return (NULL);
 }
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// int main(void) {
-// 	char haystack[30] = "aaabcabcd";
-// 	char needle[10] = "aabc";
-// 	char * empty = (char*)"";
-// 	printf("found: %s\n", ft_strnstr(haystack, "cd", 8));
-// 	printf("found: %s\n", strnstr(haystack, "cd", 8));
-// 	return 0;
-// }

@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *str)
 {
-	unsigned int	i;
-	unsigned int	value;
-	int				neg;
+	unsigned int		i;
+	unsigned long long	value;
+	int					neg;
 
 	neg = 1;
 	i = 0;
@@ -31,10 +31,10 @@ int	ft_atoi(const char *str)
 	else if (str[i] == '+')
 		i++;
 	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
-	{
-		value *= 10;
-		value += str[i] - '0';
-		i++;
-	}
+		value = (value * 10) + str[i++] - '0';
+	if (value > LLONG_MAX && neg == 1)
+		return (-1);
+	else if (value > LLONG_MAX && neg == -1)
+		return (0);
 	return (value * neg);
 }

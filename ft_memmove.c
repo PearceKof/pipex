@@ -11,35 +11,32 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include <stdio.h>
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned char	*d;
 	unsigned char	*s;
-	size_t			i;
 
 	if (dst == NULL && src == NULL)
 		return (NULL);
 	d = (unsigned char *)dst;
 	s = (unsigned char *)src;
-	i = len - 1;
-	while (len > 0)
+	if (d > s)
 	{
-		d[i] = s[i];
-		i--;
-		len--;
+		while (len > 0)
+		{
+			len--;
+			d[len] = s[len];
+		}
 	}
+	else
+		ft_memcpy(dst, src, len);
 	return (dst);
 }
 
-// int main(void)
+// int main()
 // {
-// 	char stra[5] = "01234";
-// 	char strb[11] = "abcdefghij";
-// 	char sResult[] = "ghghi\0-";
-// 	ft_memmove(sResult + 1, sResult, 2);//sResult+1=hghi ghhi
-// 	printf("%s\n", sResult);
-// 	char sResultbis[] = "ghghi\0-";
-// 	memmove(sResultbis + 1, sResultbis, 2);//sResult+1=hghi ghhi
-// 	printf("%s\n", sResultbis);
+//     char test2[] = "coucou";
+//     char test[] = "test";
+//     ft_memmove(test2, test, 5);
 // }

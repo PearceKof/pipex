@@ -24,11 +24,3 @@ void	*ft_memset(void *s, int c, size_t n)
 	}
 	return (s);
 }
-
-// int main()
-// {
-// 	char str[11] = "0123456789";
-// 	printf("Avant: %s\n\n", str);
-// 	ft_memset(str + 1, 'a', 9);
-// 	printf("Apres: %s\n\n", str);
-// }

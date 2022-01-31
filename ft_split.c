@@ -73,7 +73,7 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	k = 0;
 	tab = (char **)malloc(sizeof(char *) * (ft_count(s, c)) + 1);
-	if (!tab)
+	if (!tab || !s)
 		return (NULL);
 	while (s[i] != '\0')
 	{

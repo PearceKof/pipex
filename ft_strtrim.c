@@ -28,27 +28,28 @@ static int	ft_checkc(const char c, const char *set)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	unsigned int	i;
-	int				start;
-	int				end;
+	int	i;
+	int j;
 	char			*str;
 
 	i = 0;
-	start = 0;
-	end = ft_strlen(s1) - 1;
-	while (ft_checkc(s1[start], set))
-		start++;
-	while (ft_checkc(s1[end], set))
-		end--;
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) - start));
+	j = 0;
+	while (ft_checkc(*s1, set))
+		s1++;
+	while (s1[i])
+	{
+		if (ft_checkc(s1[i], set))
+			j++;
+		else if (j > 0)
+			j = 0;
+		i++;
+	}
+	i -= j;
+	str = (char *)malloc(sizeof(char) * (i + 1));
 	if (str == NULL)
 		return (NULL);
-	while (start <= end)
-	{
-		str[i] = s1[start];
-		i++;
-		start++;
-	}
 	str[i] = '\0';
+	while (i-- > 0)
+		str[i] = s1[i];
 	return (str);
 }
