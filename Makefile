@@ -72,7 +72,7 @@ $(NAME): $(OBJ)
 	@ar crs $(NAME) $(OBJ)
 
 %.o: %.c
-	gcc $(FLAGS) -c $< -o $@
+	@gcc $(FLAGS) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(BOBJ)
