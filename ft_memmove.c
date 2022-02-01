@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
+
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned char	*d;
@@ -33,10 +33,3 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 		ft_memcpy(dst, src, len);
 	return (dst);
 }
-
-// int main()
-// {
-//     char test2[] = "coucou";
-//     char test[] = "test";
-//     ft_memmove(test2, test, 5);
-// }

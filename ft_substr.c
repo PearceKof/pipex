@@ -20,7 +20,6 @@ static int	ft_mallen(char const *s, unsigned int start, size_t len)
 		return (ft_strlen(s + start));
 	else
 		return (len);
-	
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -29,17 +28,17 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	int		i;
 	int		j;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	j = 0;
 	str = (char *)malloc(sizeof(char) * ft_mallen(s, start, len) + 1);
-	if (str == NULL)
+	if (!str)
 		return (NULL);
 	i = start;
 	while (s[i] && len > 0 && start <= ft_strlen(s))
 	{
-		str[j] = s[i];
-		i++;
-		j++;
+		str[j++] = s[i++];
 		len--;
 	}
 	str[j] = '\0';

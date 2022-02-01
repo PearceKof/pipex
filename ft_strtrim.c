@@ -28,21 +28,22 @@ static int	ft_checkc(const char c, const char *set)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int	i;
-	int j;
-	char			*str;
+	int		i;
+	int		j;
+	char	*str;
 
-	i = 0;
+	if (!s1 || !set)
+		return (NULL);
+	i = -1;
 	j = 0;
 	while (ft_checkc(*s1, set))
 		s1++;
-	while (s1[i])
+	while (s1[++i])
 	{
 		if (ft_checkc(s1[i], set))
 			j++;
 		else if (j > 0)
 			j = 0;
-		i++;
 	}
 	i -= j;
 	str = (char *)malloc(sizeof(char) * (i + 1));

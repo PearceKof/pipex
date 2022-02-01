@@ -70,6 +70,8 @@ char	**ft_split(char const *s, char c)
 	unsigned int		k;
 	char				**tab;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	k = 0;
 	tab = (char **)malloc(sizeof(char *) * (ft_count(s, c)) + 1);
@@ -83,10 +85,7 @@ char	**ft_split(char const *s, char c)
 		while (s[i] != '\0' && s[i] != c)
 			i++;
 		if (i > j)
-		{
-			tab[k] = ft_strndup(s + j, i - j, tab);
-			k++;
-		}
+			tab[k++] = ft_strndup(s + j, i - j, tab);
 	}
 	tab[k] = NULL;
 	return (tab);

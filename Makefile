@@ -66,13 +66,17 @@ BOBJ 		= $(BONUSFILES:%.c=%.o)
 all: $(NAME)
 
 bonus:		$(BOBJ) $(OBJ)
-	@ar rcs $(NAME) $(OBJ) $(BOBJ)
+	@ar rc $(NAME) $(OBJ) $(BOBJ)
+	@ranlib $(NAME)
 
 $(NAME): $(OBJ)
-	@ar rcs $(NAME) $(OBJ)
+	@ar rc $(NAME) $(OBJ)
+	@echo "$(NAME) created"
+	@ranlib $(NAME)
+	@echo "$(NAME) indexed"
 
 %.o: %.c
-	@gcc $(FLAG) -c $^ -o $@
+	@gcc $(FLAG) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(BOBJ)
