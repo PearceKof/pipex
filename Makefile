@@ -66,13 +66,13 @@ BOBJ 		= $(BONUSFILES:%.c=%.o)
 all: $(NAME)
 
 bonus:		$(BOBJ) $(OBJ)
-	@ar rcs $(NAME) $(OBJ) $(BOBJ)
+	@ar crs $(NAME) $(OBJ) $(BOBJ)
 
 $(NAME): $(OBJ)
-	@ar rcs $(NAME) $(OBJ)
+	@ar crs $(NAME) $(OBJ)
 
 %.o: %.c
-	@gcc $(FLAGS) -c $< -o $@
+	gcc $(FLAGS) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(BOBJ)
