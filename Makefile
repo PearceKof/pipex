@@ -12,7 +12,7 @@
 
 NAME 		= libft.a
 
-CFFLAGS		= -Wall -Wextra -Werror
+FLAGS		= -Wall -Wextra -Werror
 
 FILES 		= ft_atoi.c \
 						ft_bzero.c \
@@ -66,24 +66,18 @@ BOBJ 		= $(BONUSFILES:%.c=%.o)
 all: $(NAME)
 
 bonus:		$(BOBJ) $(OBJ)
-	@ar rc $(NAME) $(OBJ) $(BOBJ)
-	@ranlib $(NAME)
+	@ar rcs $(NAME) $(OBJ) $(BOBJ)
 
 $(NAME): $(OBJ)
-	@ar rc $(NAME) $(OBJ)
-	@echo "$(NAME) created"
-	@ranlib $(NAME)
-	@echo "$(NAME) indexed"
+	@ar rcs $(NAME) $(OBJ)
 
 %.o: %.c
-	@gcc $(FLAG) -c $< -o $@
+	@gcc $(FLAGS) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(BOBJ)
-	@echo "OBJ deleted"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "$(NAME) deleted"
 
 re: fclean all
