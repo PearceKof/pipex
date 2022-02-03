@@ -12,81 +12,73 @@
 
 #include "libft.h"
 
-static char	*ft_mallocerror(char **tab)
+static int	ft_countc(char const *s, char c)
 {
-	unsigned int	i;
+	int	i;
+	int	count;
 
 	i = 0;
-	while (!tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	return (NULL);
-}
-
-static int	ft_count(char const *s, char c)
-{
-	unsigned int	i;
-	int				cnt;
-
-	i = 0;
-	cnt = 0;
+	count = 0;
 	while (s[i])
 	{
 		while (s[i] == c)
 			i++;
 		if (s[i] != '\0')
-			cnt++;
+			count++;
 		while (s[i] != c && s[i] != '\0')
 			i++;
 	}
-	return (cnt);
+	return (count);
 }
 
-static char	*ft_strndup(const char *s, size_t n, char **tab)
+static void	*ft_mallocerror(char **tab, int i)
 {
-	char	*str;
-	size_t	i;
+	while (--i >= 0)
+		free(tab[i]);
+	free(tab);
+	return (NULL);
+}
+
+static const char	*ft_filltab(char **tab, const char *s, char c)
+{
+	int	i;
+	int	i2;
 
 	i = 0;
-	str = (char *)malloc(sizeof(char) * n + 1);
-	if (!str)
-		return (ft_mallocerror(tab));
-	while (i < n)
-	{
-		str[i] = s[i];
+	while (*s && *s == c)
+		s++;
+	while (s[i] && s[i] != c)
 		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	*tab = (char *)malloc(sizeof(char) * (i + 1));
+	if (!tab)
+		return (NULL);
+	i2 = -1;
+	while (++i2 < i)
+		(*tab)[i2] = s[i2];
+	(*tab)[i2] = '\0';
+	return (&s[i2]);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	unsigned int		i;
-	unsigned int		j;
-	unsigned int		k;
-	char				**tab;
+	int		i;
+	int		nbrofc;
+	char	**tab;
 
 	if (!s)
 		return (NULL);
 	i = 0;
-	k = 0;
-	tab = (char **)malloc(sizeof(char *) * (ft_count(s, c)) + 1);
-	if (!tab || !s)
+	nbrofc = ft_countc(s, c);
+	tab = (char **)malloc(sizeof(char *) * (nbrofc + 1));
+	if (!tab)
 		return (NULL);
-	while (s[i] != '\0')
+	i = -1;
+	while (++i < nbrofc)
 	{
-		while (s[i] == c)
-			i++;
-		j = i;
-		while (s[i] != '\0' && s[i] != c)
-			i++;
-		if (i > j)
-			tab[k++] = ft_strndup(s + j, i - j, tab);
+		s = ft_filltab(&tab[i], s, c);
+		if (!tab[i])
+			return (ft_mallocerror(tab, i));
 	}
-	tab[k] = NULL;
+	tab[i] = NULL;
 	return (tab);
 }
