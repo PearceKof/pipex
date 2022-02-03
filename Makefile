@@ -81,3 +81,5 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all bonus clean fclean re

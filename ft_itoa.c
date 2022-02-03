@@ -51,7 +51,7 @@ char	*ft_itoa(int n)
 
 	neg = ft_isneg(n);
 	i = ft_nbrlen(n) + neg;
-	str = (char *)malloc(sizeof(char) * i + 1);
+	str = (char *)malloc(sizeof(char) * (i + 1));
 	if (!str)
 		return (NULL);
 	if (n == 0)

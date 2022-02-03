@@ -16,6 +16,8 @@ void	ft_putnbr_fd(int nb, int fd)
 {
 	unsigned int	nbr;
 
+	if (fd < 0)
+		return ;
 	if (nb < 0)
 	{
 		write(fd, "-", 1);
