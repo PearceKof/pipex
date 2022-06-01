@@ -6,21 +6,11 @@
 /*   By: blaurent <blaurent@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 14:54:05 by blaurent          #+#    #+#             */
-/*   Updated: 2022/06/01 14:20:08 by blaurent         ###   ########.fr       */
+/*   Updated: 2022/06/01 15:08:10 by blaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	ft_freetab(char **tab)
-{
-	size_t	i;
-
-	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-}
 
 char	*ft_cmdpath(char **paths, char *cmd)
 {
@@ -66,7 +56,7 @@ char	**ft_getpaths(char **envp)
 	return (paths);
 }
 
-void	ft_son(char **av, char **paths,int *fd)
+void	ft_son(char **av, char **paths, int *fd)
 {
 	char	**option;
 	char	*cmdpath;
@@ -82,7 +72,7 @@ void	ft_son(char **av, char **paths,int *fd)
 	execve(cmdpath, option, NULL);
 }
 
-void	ft_daddy(char **av, char **paths,int *fd)
+void	ft_daddy(char **av, char **paths, int *fd)
 {
 	char	**option;
 	char	*cmdpath;
@@ -104,7 +94,7 @@ int	main(int ac, char **av, char **env)
 	int		fd[2];
 	pid_t	pid;
 
-	if (pipe(fd) == -1)
+	if (ac != 5 || pipe(fd) == -1)
 		return (-1);
 	paths = ft_getpaths(env);
 	pid = fork();

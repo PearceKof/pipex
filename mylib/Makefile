@@ -14,7 +14,7 @@ NAME		= mylib.a
 
 FLAGS		= -Wall -Wextra -Werror
 
-FILES		= ft_printf/ft_printf.c\
+FILES		= ft_printf/ft_printf.c \
 				ft_printf/ft_print_c.c \
 				ft_printf/ft_print_p.c \
 				ft_printf/ft_print_s.c \
