@@ -6,7 +6,7 @@
 #    By: blaurent <blaurent@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/26 14:40:54 by blaurent          #+#    #+#              #
-#    Updated: 2022/06/01 15:19:45 by blaurent         ###   ########.fr        #
+#    Updated: 2022/06/01 16:51:15 by blaurent         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ 		= pipex.o
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME):
 	make -C ./mylib/
 	gcc $(FLAGS) $(FILES) mylib/mylib.a -o $(NAME)
 

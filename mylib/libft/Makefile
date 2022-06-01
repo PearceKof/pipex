@@ -17,6 +17,7 @@ FLAGS		= -Wall -Wextra -Werror
 FILES 		= ft_atoi.c \
 						ft_bzero.c \
 						ft_calloc.c \
+						ft_freetab.c \
 						ft_isalnum.c \
 						ft_isalpha.c \
 						ft_isascii.c \
@@ -47,6 +48,7 @@ FILES 		= ft_atoi.c \
 						ft_strncmp.c \
 						ft_strnstr.c \
 						ft_strrchr.c \
+						ft_strstr.c \
 						ft_strtrim.c \
 						ft_substr.c \
 						ft_tolower.c \
