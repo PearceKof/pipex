@@ -6,7 +6,7 @@
 /*   By: blaurent <blaurent@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 14:54:05 by blaurent          #+#    #+#             */
-/*   Updated: 2022/05/30 16:19:23 by blaurent         ###   ########.fr       */
+/*   Updated: 2022/06/01 14:20:08 by blaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ char	*ft_cmdpath(char **paths, char *cmd)
 
 char	**ft_getpaths(char **envp)
 {
-	size_t	i;
 	char	**paths;
 	char	*line;
+	size_t	i;
 
 	i = 0;
 	line = NULL;
@@ -68,41 +68,55 @@ char	**ft_getpaths(char **envp)
 
 void	ft_son(char **av, char **paths,int *fd)
 {
-	int		infd;
 	char	**option;
 	char	*cmdpath;
+	int		infd;
 
-	cmdpath = ft_cmdpath(paths, av[1]);
-	printf("%s", cmdpath);
-	// dup2(infd, STDIN_FILENO);
-	// dup2(fd[1], STDOUT_FILENO);
-	// execve(cmdpath, option, NULL);
-	// close(infd);
+	infd = open(av[1], O_RDONLY);
+	option = ft_split(av[2], ' ');
+	cmdpath = ft_cmdpath(paths, option[0]);
+	dup2(infd, STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	execve(cmdpath, option, NULL);
 }
 
 void	ft_daddy(char **av, char **paths,int *fd)
 {
-	int	outfd;
+	char	**option;
+	char	*cmdpath;
+	int		outfd;
+
+	outfd = open(av[4], O_WRONLY);
+	option = ft_split(av[3], ' ');
+	cmdpath = ft_cmdpath(paths, option[0]);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(outfd, STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	execve(cmdpath, option, NULL);
 }
 
-int	main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **env)
 {
-	int		fd[2];
-	pid_t	pid1;
 	char	**paths;
+	int		fd[2];
+	pid_t	pid;
 
-
-	paths = ft_getpaths(envp);
 	if (pipe(fd) == -1)
 		return (-1);
-	pid1 = fork();
-	if (pid1 < 0)
+	paths = ft_getpaths(env);
+	pid = fork();
+	if (pid < 0)
 		return (-1);
-	else if (pid1 == 0)
+	else if (pid == 0)
+		ft_daddy(av, paths, fd);
+	else if (pid > 0)
 		ft_son(av, paths, fd);
-	else if (pid1 > 0)
-		ft_daddy(av, envp, fd);
-	waitpid(pid1, NULL, 0);
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid, NULL, WUNTRACED);
 	ft_freetab(paths);
 	// system("leaks a.out");
 	return (0);

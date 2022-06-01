@@ -6,14 +6,15 @@
 /*   By: blaurent <blaurent@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 14:53:06 by blaurent          #+#    #+#             */
-/*   Updated: 2022/05/30 13:34:31 by blaurent         ###   ########.fr       */
+/*   Updated: 2022/06/01 14:15:15 by blaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "ft_printf/libft/libft.h"
+# include "mylib/includes/libft.h"
+# include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
