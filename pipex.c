@@ -6,7 +6,7 @@
 /*   By: blaurent <blaurent@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 14:54:05 by blaurent          #+#    #+#             */
-/*   Updated: 2022/06/01 17:11:41 by blaurent         ###   ########.fr       */
+/*   Updated: 2022/06/03 12:42:28 by blaurent         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,13 @@ char	**ft_getpaths(char **envp)
 	return (paths);
 }
 
-void	ft_scmd(char **av, char **paths, int *fd)
+int	ft_scmd(char **av, char **paths,  char **env, int *fd)
 {
 	char	**option;
 	char	*cmdpath;
 	int		infd;
 
+	printf("4\n");
 	infd = open(av[1], O_RDWR | O_TRUNC);
 	option = ft_split(av[2], ' ');
 	cmdpath = ft_cmdpath(paths, option[0]);
@@ -69,15 +70,17 @@ void	ft_scmd(char **av, char **paths, int *fd)
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
-	execve(cmdpath, option, NULL);
+	execve(cmdpath, option, env);
+	return (-1);
 }
 
-void	ft_fcmd(char **av, char **paths, int *fd)
+int	ft_fcmd(char **av, char **paths, char **env, int *fd)
 {
 	char	**option;
 	char	*cmdpath;
 	int		outfd;
 
+	printf("1\n");
 	outfd = open(av[4], O_WRONLY);
 	option = ft_split(av[3], ' ');
 	cmdpath = ft_cmdpath(paths, option[0]);
@@ -85,7 +88,26 @@ void	ft_fcmd(char **av, char **paths, int *fd)
 	dup2(outfd, STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
-	execve(cmdpath, option, NULL);
+	execve(cmdpath, option, env);
+	return (-1);
+}
+
+int	ft_clearfile(char **av, char **paths, char **env, int *fd)
+{
+	char	**option;
+	char	*cmdpath;
+	int		outfd;
+
+	printf("ICI\n");
+	outfd = open(av[4], O_WRONLY);
+	option = ft_split("clear", ' ');
+	cmdpath = ft_cmdpath(paths, option[0]);
+	dup2(fd[0], STDIN_FILENO);
+	dup2(outfd, STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	execve(cmdpath, option, env);
+	return (-1);
 }
 
 int	main(int ac, char **av, char **env)
@@ -99,15 +121,23 @@ int	main(int ac, char **av, char **env)
 		return (-1);
 	paths = ft_getpaths(env);
 	pid1 = fork();
-	if (pid1 < 0)
+	pid2 = fork();
+	if (pid1 < 0 || pid2 < 0)
 		return (-1);
-	else if (pid1 == 0)
-		ft_fcmd(av, paths, fd);
-	else if (pid1 > 0)
-		ft_scmd(av, paths, fd);
-	printf("fini");
+	if (pid1 > 0 && pid2 > 0)
+		return(ft_fcmd(av, paths, env, fd));
+	if (pid1 > 0 && pid2 == 0)
+		return(ft_clearfile(av, paths, env, fd));// clear outfile ?
+	if (pid1 == 0 && pid2 > 0)
+		ft_scmd(av, paths, env, fd);
+	if (pid1 == 0 && pid2 == 0)
+		return (-1);
+	printf("4\n");// close all files ?
 	close(fd[0]);
 	close(fd[1]);
 	ft_freetab(paths);
+	waitpid(pid2, NULL, WUNTRACED);
+	waitpid(pid1, NULL, WUNTRACED);
+	system("leaks pipex");
 	return (0);
 }
