@@ -12,132 +12,81 @@
 
 #include "pipex.h"
 
-char	*ft_cmdpath(char **paths, char *cmd)
-{
-	char	*cmdpath;
-	size_t	i;
-
-	i = 0;
-	while (paths[i])
-	{
-		cmdpath = ft_strjoin(paths[i], cmd);
-		if (!access(cmdpath, X_OK))
-			return (cmdpath);
-		free(cmdpath);
-		i++;
-	}
-	return (NULL);
-}
-
-char	**ft_getpaths(char **envp)
-{
-	char	**paths;
-	char	*line;
-	size_t	i;
-
-	i = 0;
-	line = NULL;
-	while (envp[i] && !line)
-		line = ft_strstr(envp[i++], "PATH=");
-	if (!line)
-		return (NULL);
-	paths = ft_split((line + 5), ':');
-	if (!paths)
-		return (NULL);
-	i = 0;
-	line = NULL;
-	while (paths[i])
-	{
-		line = ft_strjoin(paths[i], "/");
-		free(paths[i]);
-		paths[i] = line;
-		i++;
-	}
-	return (paths);
-}
-
-int	ft_scmd(char **av, char **paths,  char **env, int *fd)
+void	ft_son(char **av, char **env, int *fd)
 {
 	char	**option;
 	char	*cmdpath;
 	int		infd;
 
-	printf("4\n");
-	infd = open(av[1], O_RDWR | O_TRUNC);
+	infd = open(av[1], O_RDWR);
+	if (infd == -1)
+		error();
 	option = ft_split(av[2], ' ');
 	cmdpath = ft_cmdpath(paths, option[0]);
 	dup2(infd, STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
-	close(fd[1]);
 	execve(cmdpath, option, env);
-	return (-1);
 }
 
-int	ft_fcmd(char **av, char **paths, char **env, int *fd)
+void	ft_daddy(char **av, char **env, int *fd)
 {
 	char	**option;
 	char	*cmdpath;
 	int		outfd;
 
-	printf("1\n");
-	outfd = open(av[4], O_WRONLY);
+	outfd = open(av[4], O_WRONLY | O_CREAT | O_WRONLY | O_TRUNC);
+	if (outfd == -1)
+		error();
 	option = ft_split(av[3], ' ');
 	cmdpath = ft_cmdpath(paths, option[0]);
 	dup2(fd[0], STDIN_FILENO);
 	dup2(outfd, STDOUT_FILENO);
-	close(fd[0]);
 	close(fd[1]);
 	execve(cmdpath, option, env);
-	return (-1);
 }
 
-int	ft_clearfile(char **av, char **paths, char **env, int *fd)
-{
-	char	**option;
-	char	*cmdpath;
-	int		outfd;
+// int	ft_clearfile(char **av, char **paths, char **env, int *fd)
+// {
+// 	char	**option;
+// 	char	*cmdpath;
+// 	int		outfd;
 
-	printf("ICI\n");
-	outfd = open(av[4], O_WRONLY);
-	option = ft_split("clear", ' ');
-	cmdpath = ft_cmdpath(paths, option[0]);
-	dup2(fd[0], STDIN_FILENO);
-	dup2(outfd, STDOUT_FILENO);
-	close(fd[0]);
-	close(fd[1]);
-	execve(cmdpath, option, env);
-	return (-1);
-}
+// 	outfd = open(av[4], O_WRONLY);
+// 	option = ft_split("clear", ' ');
+// 	cmdpath = ft_cmdpath(paths, option[0]);
+// 	dup2(fd[0], STDIN_FILENO);
+// 	dup2(outfd, STDOUT_FILENO);
+// 	close(fd[0]);
+// 	close(fd[1]);
+// 	execve(cmdpath, option, env);
+// 	return (-1);
+// }
 
 int	main(int ac, char **av, char **env)
 {
 	char	**paths;
 	int		fd[2];
-	pid_t	pid1;
-	pid_t	pid2;
+	pid_t	pid;
 
-	if (ac != 5 || pipe(fd) == -1)
-		return (-1);
-	paths = ft_getpaths(env);
-	pid1 = fork();
-	pid2 = fork();
-	if (pid1 < 0 || pid2 < 0)
-		return (-1);
-	if (pid1 > 0 && pid2 > 0)
-		return(ft_fcmd(av, paths, env, fd));
-	if (pid1 > 0 && pid2 == 0)
-		return(ft_clearfile(av, paths, env, fd));// clear outfile ?
-	if (pid1 == 0 && pid2 > 0)
-		ft_scmd(av, paths, env, fd);
-	if (pid1 == 0 && pid2 == 0)
-		return (-1);
-	printf("4\n");// close all files ?
-	close(fd[0]);
-	close(fd[1]);
-	ft_freetab(paths);
-	waitpid(pid2, NULL, WUNTRACED);
-	waitpid(pid1, NULL, WUNTRACED);
+	if (ac == 5)
+	{
+		if (pipe(fd) == -1)
+			error();
+		paths = ft_getpaths(env);
+		pid = fork();
+		if (pid == -1)
+			error();
+		if (pid == 0)
+			ft_son(av, env, fd);
+		ft_freetab(paths);
+		waitpid(pid1, NULL, 0);
+		ft_daddy(av, env, fd);
+	}
+	else
+	{
+		error();
+	}
 	system("leaks pipex");
 	return (0);
 }
