@@ -14,9 +14,10 @@ NAME		= pipex
 
 FLAGS		= -Wall -Wextra -Werror
 
-FILES		= pipex.c
+FILES		= pipex.c \
+				path.c
 
-OBJ 		= pipex.o
+OBJ 		= $(FILES:%.c=%.o)
 
 all: $(NAME)
 
