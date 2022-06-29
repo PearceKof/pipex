@@ -14,6 +14,7 @@
 # define PIPEX_H
 
 # include "mylib/includes/libft.h"
+# include "mylib/includes/ft_printf.h"
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -26,6 +27,6 @@ int		ft_fcmd(char **av, char **paths,  char **env, int *fd);
 int		ft_scmd(char **av, char **paths,  char **env, int *fd);
 char	*ft_cmdpath(char **paths, char *cmd);
 char	**ft_getpaths(char **envp);
-char	**ft_getpaths(char **envp);
+void	error(void)
 
 #endif
