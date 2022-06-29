@@ -12,21 +12,6 @@
 
 #include "pipex.h"
 
-void exec(char *av, char **env)
-{
-	char	**option;
-	char	*cmdpath;
-
-	option = ft_split(av, ' ');
-	cmdpath = ft_cmdpath(ft_getpaths(env), option[0]);
-	if (!cmdpath)
-	{
-		ft_freetab(option);
-	}
-		error();
-	execve(cmdpath, option, env);
-}
-
 void	ft_son(char **av, char **env, int *fd)
 {
 	int		infd;
@@ -44,7 +29,7 @@ void	ft_daddy(char **av, char **env, int *fd)
 {
 	int		outfd;
 
-	outfd = open(av[4], O_WRONLY | O_CREAT | O_WRONLY | O_TRUNC);
+	outfd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC);
 	if (outfd == -1)
 		error();
 	dup2(fd[0], STDIN_FILENO);
@@ -53,9 +38,8 @@ void	ft_daddy(char **av, char **env, int *fd)
 	exec(av[3], env);
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **envp)
 {
-	char	**paths;
 	int		fd[2];
 	pid_t	pid;
 
@@ -63,20 +47,17 @@ int	main(int ac, char **av, char **env)
 	{
 		if (pipe(fd) == -1)
 			error();
-		paths = ft_getpaths(env);
 		pid = fork();
 		if (pid == -1)
 			error();
 		if (pid == 0)
-			ft_son(av, env, fd);
-		ft_freetab(paths);
+			ft_son(av, envp, fd);
 		waitpid(pid, NULL, 0);
-		ft_daddy(av, env, fd);
+		ft_daddy(av, envp, fd);
 	}
 	else
 	{
 		error();
 	}
-	system("leaks pipex");
 	return (0);
 }
