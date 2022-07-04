@@ -17,5 +17,5 @@ void	ft_print_u(va_list param, int *size)
 	unsigned int	uintvalue;
 
 	uintvalue = (unsigned int)va_arg(param, unsigned int);
-	*size += ft_putnbr_base(uintvalue, 10, "0123456789");
+	*size += ft_putnbr_base(uintvalue, 10, "0123456789", 1);
 }

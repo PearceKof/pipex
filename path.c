@@ -12,9 +12,9 @@
 
 #include "pipex.h"
 
-void	error(void)
+void	ft_error(char *mess, char *error)
 {
-	perror("Error");
+	ft_fprintf(STDERR_FILENO, "%s: %s\n", mess, error);
 	exit(EXIT_FAILURE);
 }
 
@@ -25,16 +25,17 @@ void exec(char *av, char **env)
 	char	*cmdpath;
 
 	paths = ft_getpaths(env);
+	if (!paths)
+		ft_error("no such file or directory", av);
 	option = ft_split(av, ' ');
 	cmdpath = ft_cmdpath(paths, option[0]);
 	if (!cmdpath)
 	{
 		ft_freetab(option);
-		free(cmdpath);
-		error();
+		ft_error("command not found", av);
 	}
 	if (execve(cmdpath, option, env) == -1)
-		exit(EXIT_FAILURE);
+		exit(-1);
 }
 
 char	*ft_cmdpath(char **paths, char *cmd)

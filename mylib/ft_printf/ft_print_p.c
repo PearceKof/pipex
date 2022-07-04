@@ -18,5 +18,5 @@ void	ft_print_p(va_list param, int *size)
 
 	adressvalue = (void *)va_arg(param, void *);
 	*size += write(1, "0x", 2);
-	*size += ft_putaddr((unsigned long long)adressvalue);
+	*size += ft_putaddr((unsigned long long)adressvalue, 1);
 }
