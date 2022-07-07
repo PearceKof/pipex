@@ -12,30 +12,41 @@
 
 #include "pipex.h"
 
+void	ft_perror(char *err)
+{
+	perror(err);
+	exit(EXIT_FAILURE);
+}
+
 void	ft_error(char *mess, char *error)
 {
-	ft_fprintf(STDERR_FILENO, "%s: %s\n", mess, error);
+	if (mess && error)
+		ft_fprintf(STDERR_FILENO, "%s: %s\n", mess, error);
 	exit(EXIT_FAILURE);
 }
 
 void exec(char *av, char **env)
 {
-	char	**paths;
+	char	**env_paths;
 	char	**option;
 	char	*cmdpath;
 
-	paths = ft_getpaths(env);
-	if (!paths)
-		ft_error("no such file or directory", av);
+	env_paths = ft_getpaths(env);
 	option = ft_split(av, ' ');
-	cmdpath = ft_cmdpath(paths, option[0]);
+	cmdpath = ft_cmdpath(env_paths, option[0]);
 	if (!cmdpath)
 	{
 		ft_freetab(option);
 		ft_error("command not found", av);
 	}
 	if (execve(cmdpath, option, env) == -1)
-		exit(-1);
+	{
+		ft_freetab(option);
+		free(cmdpath);
+		exit(EXIT_FAILURE);
+	}
+	ft_freetab(option);
+	free(cmdpath);
 }
 
 char	*ft_cmdpath(char **paths, char *cmd)
@@ -43,45 +54,45 @@ char	*ft_cmdpath(char **paths, char *cmd)
 	char	*cmdpath;
 	size_t	i;
 
+	if (!access(cmd, X_OK))
+	{
+		ft_freetab(paths);
+		return(cmd);
+	}
 	i = 0;
 	while (paths[i])
 	{
-		cmdpath = ft_strjoin(paths[i], cmd);
+		cmdpath = ft_strjoin(paths[i++], cmd);
 		if (!access(cmdpath, X_OK))
 		{
 			ft_freetab(paths);
 			return (cmdpath);
 		}
 		free(cmdpath);
-		i++;
 	}
 	ft_freetab(paths);
 	return (NULL);
 }
 
-char	**ft_getpaths(char **envp)
+char	**ft_getpaths(char **env)
 {
-	char	**paths;
+	char	**env_paths;
 	char	*line;
 	size_t	i;
 
 	i = 0;
 	line = NULL;
-	while (envp[i] && !line)
-		line = ft_strstr(envp[i++], "PATH=");
+	while (env[i] && !line)
+		line = ft_strstr(env[i++], "PATH=");
 	if (!line)
 		return (NULL);
-	paths = ft_split((line + 5), ':');
-	if (!paths)
-		return (NULL);
+	env_paths = ft_split((line + 5), ':');
 	i = 0;
-	line = NULL;
-	while (paths[i])
+	while (env_paths[i])
 	{
-		line = ft_strjoin(paths[i], "/");
-		free(paths[i]);
-		paths[i] = line;
-		i++;
+		line = ft_strjoin(env_paths[i], "/");
+		free(env_paths[i]);
+		env_paths[i++] = line;
 	}
-	return (paths);
+	return (env_paths);
 }

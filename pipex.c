@@ -17,12 +17,13 @@ void	ft_son(char **av, char **env, int *fd)
 	int		infd;
 
 	close(fd[0]);
-	infd = open(av[1], O_RDWR, 777);
+	infd = open(av[1], O_RDONLY, 0777);
 	if (infd == -1)
 		ft_error("no such file or directory", av[1]);
-	dup2(fd[1], STDOUT_FILENO);
-	dup2(infd, STDIN_FILENO);
-	close(fd[1]);
+	if (dup2(infd, STDIN_FILENO) == -1);
+		ft_perror("dup");
+	if (dup2(fd[1], STDOUT_FILENO) == -1);
+		ft_perror("dup");
 	close(infd);
 	exec(av[2], env);
 }
@@ -32,45 +33,31 @@ void	ft_daddy(char **av, char **env, int *fd)
 	int		outfd;
 
 	close(fd[1]);
-	outfd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 777);
+	outfd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (outfd == -1)
 		ft_error("no such file or directory", av[4]);
-	dup2(fd[0], STDIN_FILENO);
-	dup2(outfd, STDOUT_FILENO);
-	close(fd[0]);
+	if (dup2(outfd, STDOUT_FILENO) == -1);
+		ft_perror("dup");
+	if (dup2(fd[0], STDIN_FILENO) == -1);
+		ft_perror("dup");
 	close(outfd);
 	exec(av[3], env);
 }
 
-int	main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **env)
 {
 	int		fd[2];
 	pid_t	pid;
-	pid_t	pid2;
 
-	if (ac == 5)
-	{
-		if (pipe(fd) == -1)
-			ft_error(NULL, NULL);
-		pid = fork();
-		if (pid == -1)
-			ft_error(NULL, NULL);
-		if (pid == 0)
-			ft_son(av, envp, fd);
-		pid2 = fork();
-		if (pid2 == -1)
-			ft_error(NULL, NULL);
-		if (pid2 > 0)
-			ft_daddy(av, envp, fd);
-		close(fd[0]);
-		close(fd[1]);
-		waitpid(pid, NULL, 0);
-		waitpid(pid2, NULL, 0);
-	}
+	if (ac != 5)
+		ft_error("Invalid argument", "./pipex infile cmd1 cmd2 outfile");
+	if (pipe(fd) == -1)
+		ft_perror("pipe");
+	pid = fork();
+	if (pid == -1)
+		ft_perror("fork");
+	if (pid == 0)
+		ft_son(av, env, fd);
 	else
-	{
-		ft_printf("number of argument different of 5");
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
+		ft_daddy(av, env, fd);
 }

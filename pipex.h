@@ -27,8 +27,9 @@
 int		ft_fcmd(char **av, char **paths,  char **env, int *fd);
 int		ft_scmd(char **av, char **paths,  char **env, int *fd);
 char	*ft_cmdpath(char **paths, char *cmd);
-char	**ft_getpaths(char **envp);
+char	**ft_getpaths(char **env);
 void 	exec(char *av, char **env);
+void	ft_perror(char *err);
 void	ft_error(char *mess, char *error);
 
 #endif
