@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: blaurent <blaurent@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -25,7 +25,8 @@ void	ft_error(char *mess, char *error)
 	exit(EXIT_FAILURE);
 }
 
-void exec(char *av, char **env)
+
+void	exec(char *av, char **env)
 {
 	char	**env_paths;
 	char	**option;
@@ -34,16 +35,11 @@ void exec(char *av, char **env)
 	env_paths = ft_getpaths(env);
 	option = ft_split(av, ' ');
 	cmdpath = ft_cmdpath(env_paths, option[0]);
-	if (!cmdpath)
-	{
-		ft_freetab(option);
-		ft_error("command not found", av);
-	}
 	if (execve(cmdpath, option, env) == -1)
 	{
 		ft_freetab(option);
 		free(cmdpath);
-		exit(EXIT_FAILURE);
+		exit(126);
 	}
 	ft_freetab(option);
 	free(cmdpath);
@@ -71,7 +67,9 @@ char	*ft_cmdpath(char **paths, char *cmd)
 		free(cmdpath);
 	}
 	ft_freetab(paths);
-	return (NULL);
+	free(cmd);
+	ft_fprintf(STDERR_FILENO, "command not found : %s\n", cmd);
+	exit(127);
 }
 
 char	**ft_getpaths(char **env)
