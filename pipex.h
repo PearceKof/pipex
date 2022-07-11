@@ -24,8 +24,8 @@
 # include <string.h>
 # include <sys/wait.h>
 
-int		ft_fcmd(char **av, char **paths,  char **env, int *fd);
-int		ft_scmd(char **av, char **paths,  char **env, int *fd);
+void	childp(char **av, char **env, int *fd);
+void	parentp(char **av, char **env, int *fd);
 char	*ft_cmdpath(char **paths, char *cmd);
 char	**ft_getpaths(char **env);
 void 	exec(char *av, char **env);

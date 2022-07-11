@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	ft_son(char **av, char **env, int *fd)
+void	childp(char **av, char **env, int *fd)
 {
 	int		infd;
 
@@ -20,15 +20,15 @@ void	ft_son(char **av, char **env, int *fd)
 	infd = open(av[1], O_RDONLY, 0777);
 	if (infd == -1)
 		ft_error("no such file or directory", av[1]);
-	if (dup2(infd, STDIN_FILENO) == -1);
+	if (dup2(infd, STDIN_FILENO) == -1)
 		ft_perror("dup");
-	if (dup2(fd[1], STDOUT_FILENO) == -1);
+	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		ft_perror("dup");
 	close(infd);
 	exec(av[2], env);
 }
 
-void	ft_daddy(char **av, char **env, int *fd)
+void	parentp(char **av, char **env, int *fd)
 {
 	int		outfd;
 
@@ -36,9 +36,9 @@ void	ft_daddy(char **av, char **env, int *fd)
 	outfd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (outfd == -1)
 		ft_error("no such file or directory", av[4]);
-	if (dup2(outfd, STDOUT_FILENO) == -1);
+	if (dup2(outfd, STDOUT_FILENO) == -1)
 		ft_perror("dup");
-	if (dup2(fd[0], STDIN_FILENO) == -1);
+	if (dup2(fd[0], STDIN_FILENO) == -1)
 		ft_perror("dup");
 	close(outfd);
 	exec(av[3], env);
@@ -57,7 +57,6 @@ int	main(int ac, char **av, char **env)
 	if (pid == -1)
 		ft_perror("fork");
 	if (pid == 0)
-		ft_son(av, env, fd);
-	else
-		ft_daddy(av, env, fd);
+		childp(av, env, fd);
+	parentp(av, env, fd);
 }

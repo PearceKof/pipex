@@ -15,7 +15,7 @@ NAME		= pipex
 FLAGS		= -Wall -Wextra -Werror
 
 FILES		= pipex.c \
-				path.c
+				utils.c
 
 OBJ 		= $(FILES:%.c=%.o)
 
