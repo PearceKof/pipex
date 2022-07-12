@@ -12,18 +12,12 @@
 
 #include "pipex.h"
 
-void	ft_perror(char *err, int ret)
-{
-	perror(err);
-	exit(ret);
-}
-
 void	ft_error(char *mess, char *where, int ret)
 {
-	if (where)
+	if (mess)
 		ft_fprintf(STDERR_FILENO, "%s: %s\n", mess, where);
-	else if (mess)
-		perror(mess);
+	else if (where)
+		perror(where);
 	exit(ret);
 }
 
@@ -42,7 +36,7 @@ void	exec(char *av, char **env, int status)
 	{
 		ft_freetab(option);
 		free(cmdpath);
-		ft_perror("execve failed", 126);
+		ft_error(NULL, "execve failed", 126);
 	}
 	ft_freetab(option);
 	free(cmdpath);

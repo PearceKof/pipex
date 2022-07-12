@@ -15,24 +15,27 @@ NAME		= pipex
 FLAGS		= -Wall -Wextra -Werror
 
 FILES		= pipex.c \
-				utils.c
+				utils.c \
 
-OBJ 		= $(FILES:%.c=%.o)
+OBJ			= $(FILES:%.c=%.o)
 
 all: $(NAME)
 
-$(NAME):
-	make -C ./mylib/
-	gcc $(FLAGS) $(FILES) mylib/mylib.a -o $(NAME)
+$(NAME): $(OBJ)
+	make -C mylib/
+	gcc -o $(NAME) $(OBJ) mylib/mylib.a
+
+%.o: %.c
+	gcc $(FLAGS) -c $< -o $@
 
 clean:
-	@make clean -C mylib/
-	@rm -f $(OBJ)
+	make clean -C mylib/
+	rm -f $(OBJ)
 
 fclean: clean
-	@make fclean -C mylib/
-	@rm -f $(NAME)
+	make fclean -C mylib/
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re
