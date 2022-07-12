@@ -14,22 +14,13 @@ NAME		= mylib.a
 
 FLAGS		= -Wall -Wextra -Werror
 
-FILES		= ft_printf/ft_printf.c \
-				ft_printf/ft_print_c.c \
-				ft_printf/ft_print_p.c \
-				ft_printf/ft_print_s.c \
-				ft_printf/ft_print_u.c \
-				ft_printf/ft_print_x.c \
-				ft_printf/ft_print_di.c \
-				ft_printf/ft_fprintf/ft_fprintf.c \
-				ft_printf/ft_fprintf/ft_fprint_c.c \
-				ft_printf/ft_fprintf/ft_fprint_p.c \
-				ft_printf/ft_fprintf/ft_fprint_s.c \
-				ft_printf/ft_fprintf/ft_fprint_u.c \
-				ft_printf/ft_fprintf/ft_fprint_x.c \
-				ft_printf/ft_fprintf/ft_fprint_di.c \
-				gnl/gnl.c \
-				gnl/gnl_utils.c \
+FILES		= ft_fprintf/ft_fprintf.c \
+				ft_fprintf/ft_fprint_c.c \
+				ft_fprintf/ft_fprint_p.c \
+				ft_fprintf/ft_fprint_s.c \
+				ft_fprintf/ft_fprint_u.c \
+				ft_fprintf/ft_fprint_x.c \
+				ft_fprintf/ft_fprint_di.c \
 
 OBJ 		= $(FILES:%.c=%.o)
 
@@ -53,4 +44,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re
