@@ -19,44 +19,46 @@ void	childp(char **av, char **env, int *fd)
 	close(fd[0]);
 	infd = open(av[1], O_RDONLY, 0777);
 	if (infd == -1)
-		ft_error("no such file or directory", av[1]);
+		ft_perror(av[1], EXIT_FAILURE);
 	if (dup2(infd, STDIN_FILENO) == -1)
-		ft_perror("dup");
+		ft_perror("dup", EXIT_FAILURE);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		ft_perror("dup");
+		ft_perror("dup", EXIT_FAILURE);
 	close(infd);
-	exec(av[2], env);
+	exec(av[2], env, EXIT_FAILURE);
 }
 
-void	parentp(char **av, char **env, int *fd)
+void	parentp(char **av, char **env, int *fd, int status)
 {
 	int		outfd;
 
 	close(fd[1]);
 	outfd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (outfd == -1)
-		ft_error("no such file or directory", av[4]);
+		ft_perror(av[4], WEXITSTATUS(status));
 	if (dup2(outfd, STDOUT_FILENO) == -1)
-		ft_perror("dup");
+		ft_perror("dup", WEXITSTATUS(status));
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		ft_perror("dup");
+		ft_perror("dup", WEXITSTATUS(status));
 	close(outfd);
-	exec(av[3], env);
+	exec(av[3], env, WEXITSTATUS(status));
 }
 
 int	main(int ac, char **av, char **env)
 {
+	int		status;
 	int		fd[2];
 	pid_t	pid;
 
 	if (ac != 5)
-		ft_error("Invalid argument", "./pipex infile cmd1 cmd2 outfile");
+		ft_error("Invalid argument", "./pipex infile cmd1 cmd2 outfile", 1);
 	if (pipe(fd) == -1)
-		ft_perror("pipe");
+		ft_perror("pipe", EXIT_FAILURE);
 	pid = fork();
 	if (pid == -1)
-		ft_perror("fork");
+		ft_perror("fork", EXIT_FAILURE);
 	if (pid == 0)
 		childp(av, env, fd);
-	parentp(av, env, fd);
+	waitpid(pid, &status, WNOHANG);
+	parentp(av, env, fd, status);
 }

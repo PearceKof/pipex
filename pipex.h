@@ -15,7 +15,7 @@
 
 # include "mylib/includes/libft.h"
 # include "mylib/includes/ft_printf.h"
-# include <errno.h>
+// # include <errno.h>
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -25,11 +25,10 @@
 # include <sys/wait.h>
 
 void	childp(char **av, char **env, int *fd);
-void	parentp(char **av, char **env, int *fd);
+void	parentp(char **av, char **env, int *fd, int status);
 char	*ft_cmdpath(char **paths, char *cmd);
 char	**ft_getpaths(char **env);
-void 	exec(char *av, char **env);
-void	ft_perror(char *err);
-void	ft_error(char *mess, char *error);
-
+void	exec(char *av, char **env, int status);
+void	ft_error(char *mess, char *error, int ret);
+void	ft_perror(char *err, int ret);
 #endif
