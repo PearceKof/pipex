@@ -72,7 +72,7 @@ char	*ft_cmdpath(char **paths, char *cmd)
 	}
 	ft_freetab(paths);
 	free(cmd);
-	return(NULL);
+	return (NULL);
 }
 
 char	**ft_getpaths(char **env)
