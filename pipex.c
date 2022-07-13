@@ -35,7 +35,7 @@ void	parentp(char **av, char **env, int *fd, int status)
 	close(fd[1]);
 	outfd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (outfd == -1)
-		ft_error(NULL, av[4], WEXITSTATUS(status));
+		ft_error(NULL, av[4], EXIT_FAILURE);
 	if (dup2(outfd, STDOUT_FILENO) == -1)
 		ft_error(NULL, "dup", WEXITSTATUS(status));
 	if (dup2(fd[0], STDIN_FILENO) == -1)
