@@ -24,7 +24,7 @@ void	childp(char **av, char **env, int *fd);
 void	parentp(char **av, char **env, int *fd, int status);
 char	*ft_cmdpath(char **paths, char *cmd);
 char	**ft_getpaths(char **env);
-void	exec(char *av, char **env, int status);
+void	exec(char *av, char **env, int ret);
 void	ft_error(char *mess, char *error, int ret);
 
 #endif

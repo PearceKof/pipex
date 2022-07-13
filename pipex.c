@@ -17,14 +17,15 @@ void	childp(char **av, char **env, int *fd)
 	int		infd;
 
 	close(fd[0]);
-	infd = open(av[1], O_RDONLY, 0777);
+	infd = open(av[1], O_RDONLY);
 	if (infd == -1)
 		ft_error(NULL, av[1], EXIT_FAILURE);
 	if (dup2(infd, STDIN_FILENO) == -1)
 		ft_error(NULL, "dup", EXIT_FAILURE);
+	close(infd);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		ft_error(NULL, "dup", EXIT_FAILURE);
-	close(infd);
+	close(fd[1]);
 	exec(av[2], env, EXIT_FAILURE);
 }
 
@@ -33,14 +34,15 @@ void	parentp(char **av, char **env, int *fd, int status)
 	int		outfd;
 
 	close(fd[1]);
-	outfd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	outfd = open(av[4], O_WRONLY | O_TRUNC | O_CREAT, 00777);
 	if (outfd == -1)
 		ft_error(NULL, av[4], EXIT_FAILURE);
 	if (dup2(outfd, STDOUT_FILENO) == -1)
 		ft_error(NULL, "dup", WEXITSTATUS(status));
+	close(outfd);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		ft_error(NULL, "dup", WEXITSTATUS(status));
-	close(outfd);
+	close(fd[0]);
 	exec(av[3], env, WEXITSTATUS(status));
 }
 

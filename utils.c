@@ -21,7 +21,7 @@ void	ft_error(char *mess, char *where, int ret)
 	exit(ret);
 }
 
-void	exec(char *av, char **env, int status)
+void	exec(char *av, char **env, int ret)
 {
 	char	**env_paths;
 	char	**option;
@@ -40,7 +40,7 @@ void	exec(char *av, char **env, int status)
 	}
 	ft_freetab(option);
 	free(cmdpath);
-	exit(status);
+	exit(ret);
 }
 
 char	*ft_cmdpath(char **paths, char *cmd)
