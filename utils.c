@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	ft_error(char *where, char **freed,  int ret)
+void	ft_error(char *where, char **freed, int ret)
 {
 	perror(where);
 	if (freed)
@@ -20,19 +20,15 @@ void	ft_error(char *where, char **freed,  int ret)
 	exit(ret);
 }
 
-void	exec(char *av, char **env, int ret)
+void	exec(char *av, char **env)
 {
-	char	**env_paths;
 	char	**option;
 	char	*cmdpath;
 
-	env_paths = ft_getpaths(env);
-	if (!env_paths)
-		ft_error("env", NULL, ret);
 	option = ft_split(av, ' ');
 	if (!option)
-		ft_error("ft_split", env_paths,  ret);
-	cmdpath = ft_cmdpath(env_paths, option[0]);
+		ft_error("ft_split", NULL, EXIT_FAILURE);
+	cmdpath = ft_getpaths(env, option[0]);
 	if (!cmdpath)
 	{
 		ft_freetab(option);
@@ -46,53 +42,47 @@ void	exec(char *av, char **env, int ret)
 	}
 }
 
-char	*ft_cmdpath(char **paths, char *cmd)
+char	*checkpaths(char **env_paths, char *cmd)
 {
 	char	*cmdpath;
+	char	*tmp;
 	size_t	i;
 
-	if (!access(cmd, F_OK))
+	if (!access(cmd, X_OK))
 	{
-		cmdpath = ft_strjoin("", cmd);
-		ft_freetab(paths);
-		return (cmd);
+		ft_freetab(env_paths);
+		cmdpath = ft_strdup(cmd);
+		return (cmdpath);
 	}
 	i = 0;
-	while (paths[i])
+	while (env_paths[i])
 	{
-		cmdpath = ft_strjoin(paths[i++], cmd);
-		if (!cmdpath || !access(cmdpath, F_OK))
+		tmp = ft_strjoin(env_paths[i++], "/");
+		cmdpath = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (!access(cmdpath, X_OK))
 		{
-			ft_freetab(paths);
+			ft_freetab(env_paths);
 			return (cmdpath);
 		}
 		free(cmdpath);
 	}
-	ft_freetab(paths);
+	ft_freetab(env_paths);
 	return (NULL);
 }
 
-char	**ft_getpaths(char **env)
+char	*ft_getpaths(char **env, char *cmd)
 {
 	char	**env_paths;
-	char	*line;
+	char	*tmp;
 	size_t	i;
 
 	i = 0;
-	line = NULL;
-	while (env[i] && !line)
-		line = ft_strstr(env[i++], "PATH=");
-	if (!line)
+	tmp = NULL;
+	while (env[i] && !tmp)
+		tmp = ft_strstr(env[i++], "PATH=");
+	if (!tmp)
 		return (NULL);
-	env_paths = ft_split((line + 5), ':');
-	if (!env_paths)
-		return (NULL);
-	i = 0;
-	while (env_paths[i])
-	{
-		line = ft_strjoin(env_paths[i], "/");
-		free(env_paths[i]);
-		env_paths[i++] = line;
-	}
-	return (env_paths);
+	env_paths = ft_split((tmp + 5), ':');
+	return (checkpaths(env_paths, cmd));
 }
