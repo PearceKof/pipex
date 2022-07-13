@@ -12,12 +12,11 @@
 
 #include "pipex.h"
 
-void	ft_error(char *mess, char *where, int ret)
+void	ft_error(char *where, char **freed,  int ret)
 {
-	if (mess)
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", where, mess);
-	else if (where)
-		perror(where);
+	perror(where);
+	if (freed)
+		ft_freetab(freed);
 	exit(ret);
 }
 
@@ -29,25 +28,21 @@ void	exec(char *av, char **env, int ret)
 
 	env_paths = ft_getpaths(env);
 	if (!env_paths)
-		ft_error(NULL, "env", ret);
+		ft_error("env", NULL, ret);
 	option = ft_split(av, ' ');
 	if (!option)
-	{
-		ft_freetab(env_paths);
-		ft_error(NULL, "ft_split", ret);
-	}
+		ft_error("ft_split", env_paths,  ret);
 	cmdpath = ft_cmdpath(env_paths, option[0]);
 	if (!cmdpath)
 	{
 		ft_freetab(option);
-		ft_fprintf(STDERR_FILENO, "command not found : %d", av);
+		ft_fprintf(STDERR_FILENO, "%s : command not found\n", av);
 		exit(127);
 	}
 	if (execve(cmdpath, option, env) == -1)
 	{
-		ft_freetab(option);
 		free(cmdpath);
-		ft_error(NULL, "execve failed", 126);
+		ft_error("execve failed", option, 126);
 	}
 }
 
@@ -56,8 +51,9 @@ char	*ft_cmdpath(char **paths, char *cmd)
 	char	*cmdpath;
 	size_t	i;
 
-	if (!access(cmd, X_OK))
+	if (!access(cmd, F_OK))
 	{
+		cmdpath = ft_strjoin("", cmd);
 		ft_freetab(paths);
 		return (cmd);
 	}
@@ -65,7 +61,7 @@ char	*ft_cmdpath(char **paths, char *cmd)
 	while (paths[i])
 	{
 		cmdpath = ft_strjoin(paths[i++], cmd);
-		if (!access(cmdpath, X_OK))
+		if (!cmdpath || !access(cmdpath, F_OK))
 		{
 			ft_freetab(paths);
 			return (cmdpath);

@@ -19,12 +19,12 @@ void	childp(char **av, char **env, int *fd)
 	close(fd[0]);
 	infd = open(av[1], O_RDONLY);
 	if (infd == -1)
-		ft_error(NULL, av[1], EXIT_FAILURE);
+		ft_error(av[1], NULL, EXIT_FAILURE);
 	if (dup2(infd, STDIN_FILENO) == -1)
-		ft_error(NULL, "dup", EXIT_FAILURE);
+		ft_error("dup", NULL, EXIT_FAILURE);
 	close(infd);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		ft_error(NULL, "dup", EXIT_FAILURE);
+		ft_error("dup", NULL, EXIT_FAILURE);
 	close(fd[1]);
 	exec(av[2], env, EXIT_FAILURE);
 }
@@ -36,12 +36,12 @@ void	parentp(char **av, char **env, int *fd, int status)
 	close(fd[1]);
 	outfd = open(av[4], O_WRONLY | O_TRUNC | O_CREAT, 00777);
 	if (outfd == -1)
-		ft_error(NULL, av[4], EXIT_FAILURE);
+		ft_error(av[4], NULL, EXIT_FAILURE);
 	if (dup2(outfd, STDOUT_FILENO) == -1)
-		ft_error(NULL, "dup", WEXITSTATUS(status));
+		ft_error("dup", NULL, WEXITSTATUS(status));
 	close(outfd);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		ft_error(NULL, "dup", WEXITSTATUS(status));
+		ft_error("dup", NULL, WEXITSTATUS(status));
 	close(fd[0]);
 	exec(av[3], env, WEXITSTATUS(status));
 }
@@ -53,14 +53,18 @@ int	main(int ac, char **av, char **env)
 	pid_t	pid;
 
 	if (ac != 5)
-		ft_error("Invalid argument", "./pipex infile cmd1 cmd2 outfile", 1);
+	{
+		ft_putstr_fd("Invalid arguments\nex: ./pipex in cmd1 cmd2 out\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	if (pipe(fd) == -1)
-		ft_error(NULL, "pipe", EXIT_FAILURE);
+		ft_error("pipe", NULL, EXIT_FAILURE);
 	pid = fork();
 	if (pid == -1)
-		ft_error(NULL, "fork", EXIT_FAILURE);
+		ft_error("fork", NULL, EXIT_FAILURE);
 	if (pid == 0)
 		childp(av, env, fd);
-	waitpid(pid, &status, WNOHANG);
+	if(waitpid(pid, &status, WNOHANG) == -1)
+		ft_error("waitpid", NULL, EXIT_FAILURE);
 	parentp(av, env, fd, status);
 }
