@@ -19,7 +19,7 @@ FILES		= pipex.c \
 
 OBJ			= $(FILES:%.c=%.o)
 
-all: $(NAME)
+all: $(OBJ) $(NAME)
 
 $(NAME): $(OBJ)
 	make -C mylib/

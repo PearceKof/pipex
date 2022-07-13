@@ -15,7 +15,7 @@
 void	ft_error(char *mess, char *where, int ret)
 {
 	if (mess)
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", mess, where);
+		ft_fprintf(STDERR_FILENO, "%s: %s\n", where, mess);
 	else if (where)
 		perror(where);
 	exit(ret);
@@ -28,19 +28,27 @@ void	exec(char *av, char **env, int ret)
 	char	*cmdpath;
 
 	env_paths = ft_getpaths(env);
+	if (!env_paths)
+		ft_error(NULL, "env", ret);
 	option = ft_split(av, ' ');
+	if (!option)
+	{
+		ft_freetab(env_paths);
+		ft_error(NULL, "ft_split", ret);
+	}
 	cmdpath = ft_cmdpath(env_paths, option[0]);
 	if (!cmdpath)
-		ft_error("command not found", av, 127);
+	{
+		ft_freetab(option);
+		ft_fprintf(STDERR_FILENO, "command not found : %d", av);
+		exit(127);
+	}
 	if (execve(cmdpath, option, env) == -1)
 	{
 		ft_freetab(option);
 		free(cmdpath);
 		ft_error(NULL, "execve failed", 126);
 	}
-	ft_freetab(option);
-	free(cmdpath);
-	exit(ret);
 }
 
 char	*ft_cmdpath(char **paths, char *cmd)
@@ -65,7 +73,6 @@ char	*ft_cmdpath(char **paths, char *cmd)
 		free(cmdpath);
 	}
 	ft_freetab(paths);
-	free(cmd);
 	return (NULL);
 }
 
@@ -82,6 +89,8 @@ char	**ft_getpaths(char **env)
 	if (!line)
 		return (NULL);
 	env_paths = ft_split((line + 5), ':');
+	if (!env_paths)
+		return (NULL);
 	i = 0;
 	while (env_paths[i])
 	{
