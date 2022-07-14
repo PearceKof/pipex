@@ -20,12 +20,12 @@
 # include <string.h>
 # include <sys/wait.h>
 
-void	childp(char **av, char **env, int *fd);
-void	parentp(char **av, char **env, int *fd);
-int	pipex(char **av, char **env, int *fd);
 char	*ft_cmdpath(char **paths, char *cmd);
 char	*ft_getpaths(char **env, char *cmd);
+void	childp(char **av, char **env, int *fd);
+void	parentp(char **av, char **env, int *fd);
 void	exec(char *av, char **env);
 void	ft_error(char *error, char **freed, int ret);
+int		pipex(char **av, char **env, int *fd);
 
 #endif
