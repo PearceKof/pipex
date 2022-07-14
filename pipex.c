@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void	childp(char **av, char **env, int *fd)
+void	firstchild(char **av, char **env, int *fd)
 {
 	int		infd;
 
@@ -29,7 +29,7 @@ void	childp(char **av, char **env, int *fd)
 	exec(av[2], env);
 }
 
-void	parentp(char **av, char **env, int *fd)
+void	secondchild(char **av, char **env, int *fd)
 {
 	int		outfd;
 
@@ -46,10 +46,32 @@ void	parentp(char **av, char **env, int *fd)
 	exec(av[3], env);
 }
 
+int	pipex(char **av, char **env, int *fd)
+{
+	int		status;
+	pid_t	pid1;
+	pid_t	pid2;
+
+	pid1 = fork();
+	if (pid1 == -1)
+		ft_error("fork", NULL, EXIT_FAILURE);
+	if (pid1 == 0)
+		firstchild(av, env, fd);
+	pid2 = fork();
+	if (pid2 == -1)
+		ft_error("fork", NULL, EXIT_FAILURE);
+	if (pid2 == 0)
+		secondchild(av, env, fd);
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid1, &status, 0);
+	waitpid(pid2, &status, 0);
+	return (WEXITSTATUS(status));
+}
+
 int	main(int ac, char **av, char **env)
 {
 	int		fd[2];
-	pid_t	pid;
 
 	if (ac != 5)
 	{
@@ -58,12 +80,5 @@ int	main(int ac, char **av, char **env)
 	}
 	if (pipe(fd) == -1)
 		ft_error("pipe", NULL, EXIT_FAILURE);
-	pid = fork();
-	if (pid == -1)
-		ft_error("fork", NULL, EXIT_FAILURE);
-	if (pid == 0)
-		childp(av, env, fd);
-	if (waitpid(pid, NULL, WNOHANG) == -1)
-		ft_error("waitpid", NULL, EXIT_FAILURE);
-	parentp(av, env, fd);
+	return (pipex(av, env, fd));
 }

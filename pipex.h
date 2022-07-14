@@ -22,6 +22,7 @@
 
 void	childp(char **av, char **env, int *fd);
 void	parentp(char **av, char **env, int *fd);
+int	pipex(char **av, char **env, int *fd);
 char	*ft_cmdpath(char **paths, char *cmd);
 char	*ft_getpaths(char **env, char *cmd);
 void	exec(char *av, char **env);

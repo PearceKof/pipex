@@ -31,8 +31,8 @@ void	exec(char *av, char **env)
 	cmdpath = ft_getpaths(env, option[0]);
 	if (!cmdpath)
 	{
+		ft_fprintf(STDERR_FILENO, "%s : command not found\n", option[0]);
 		ft_freetab(option);
-		ft_fprintf(STDERR_FILENO, "%s : command not found\n", av);
 		exit(127);
 	}
 	if (execve(cmdpath, option, env) == -1)
@@ -48,12 +48,6 @@ char	*checkpaths(char **env_paths, char *cmd)
 	char	*tmp;
 	size_t	i;
 
-	if (!access(cmd, X_OK))
-	{
-		ft_freetab(env_paths);
-		cmdpath = ft_strdup(cmd);
-		return (cmdpath);
-	}
 	i = 0;
 	while (env_paths[i])
 	{
@@ -74,15 +68,22 @@ char	*checkpaths(char **env_paths, char *cmd)
 char	*ft_getpaths(char **env, char *cmd)
 {
 	char	**env_paths;
-	char	*tmp;
+	char	*ptr;
 	size_t	i;
 
+	if (ft_strstr(cmd, "/"))
+	{
+		if (access(cmd, F_OK))
+			ft_error(cmd, NULL, 127);
+		ptr = ft_strdup(cmd);
+		return (ptr);
+	}
 	i = 0;
-	tmp = NULL;
-	while (env[i] && !tmp)
-		tmp = ft_strstr(env[i++], "PATH=");
-	if (!tmp)
+	ptr = NULL;
+	while (env[i] && !ptr)
+		ptr = ft_strstr(env[i++], "PATH=");
+	if (!ptr)
 		return (NULL);
-	env_paths = ft_split((tmp + 5), ':');
+	env_paths = ft_split((ptr + 5), ':');
 	return (checkpaths(env_paths, cmd));
 }
