@@ -17,7 +17,6 @@
 # include "mylib/includes/ft_printf.h"
 # include <fcntl.h>
 # include <stdio.h>
-# include <string.h>
 # include <sys/wait.h>
 
 char	*ft_cmdpath(char **paths, char *cmd);
