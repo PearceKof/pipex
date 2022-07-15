@@ -64,7 +64,7 @@ int	pipex(char **av, char **env, int *fd)
 		secondchild(av, env, fd);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(pid1, &status, 0);
+	waitpid(pid1, NULL, 0);
 	waitpid(pid2, &status, 0);
 	return (WEXITSTATUS(status));
 }

@@ -73,7 +73,7 @@ char	*ft_getpaths(char **env, char *cmd)
 
 	if (ft_strstr(cmd, "/"))
 	{
-		if (access(cmd, F_OK))
+		if (access(cmd, X_OK))
 			ft_error(cmd, NULL, 127);
 		ptr = ft_strdup(cmd);
 		return (ptr);
