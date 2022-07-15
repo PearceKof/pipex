@@ -37,7 +37,8 @@ void	exec(char *av, char **env)
 	}
 	if (execve(cmdpath, option, env) == -1)
 	{
-		free(cmdpath);
+		if (cmdpath)
+			free(cmdpath);
 		ft_error("execve failed", option, 126);
 	}
 }
