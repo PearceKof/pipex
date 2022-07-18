@@ -64,8 +64,10 @@ int	pipex(char **av, char **env, int *fd)
 		secondchild(av, env, fd);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, &status, 0);
+	if (waitpid(pid1, NULL, 0) == -1)
+		return (EXIT_FAILURE);
+	if (waitpid(pid2, &status, 0) == -1)
+		return (EXIT_FAILURE);
 	return (WEXITSTATUS(status));
 }
 
