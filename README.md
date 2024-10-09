@@ -27,7 +27,7 @@ The Pipex project focuses on understanding inter-process communication via pipes
 
 ## Requirements
 
-- All the requirements for this project are outlined in the project description.
+- All the requirements for this project are outlined in the project description en.subject.pdf.
 - Language: C, following the Norm.
 - Memory Management: All allocated memory must be properly freed, and no memory leaks are tolerated.
 - Makefile: The project must include a Makefile with at least the following rules: all, clean, fclean, re, and $(NAME).
