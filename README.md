@@ -42,15 +42,15 @@ To build and run Pipex, you need a C compiler and `make`. This program is compat
 ```
 git clone https://github.com/PearceKof/pipex.git
 ```
+2. Go into the cloned directory:
 ```
 cd pipex
 ```
-2. Build the project:
+3. Build the project:
 ```
 make
 ```
-
-4. The Makefile includes the following targets:
+The Makefile includes the following targets:
 - `all`: Compiles the project
 - `clean`: Removes object files
 - `fclean`: Removes object files and the executable
