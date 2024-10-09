@@ -40,7 +40,7 @@ To build and run Pipex, you need a C compiler and `make`. This program is compat
 
 1. Clone the repository:
 ```
-git clone https://github.com/yourusername/pipex.git
+git clone https://github.com/PearceKof/pipex.git
 ```
 ```
 cd pipex
