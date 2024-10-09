@@ -31,7 +31,7 @@ The Pipex project focuses on understanding inter-process communication via pipes
 - Language: C, following the Norm.
 - Memory Management: All allocated memory must be properly freed, and no memory leaks are tolerated.
 - Makefile: The project must include a Makefile with at least the following rules: all, clean, fclean, re, and $(NAME).
-- Compilation: Use `cc` with the flags `-Wall`, `-Wextra`, and `-Werror`.
+- Compilation: Use `gcc` with the flags `-Wall`, `-Wextra`, and `-Werror`.
 - External functions: `open`, `close`, `read`, `write`, `malloc`, `free`, `perror`, `strerror`, `access`, `dup`, `dup2`, `execve`, `exit`, `fork`, `pipe`, `unlink`, `wait`, `waitpid`, and your custom `ft_printf`.
 
 ## Installation
